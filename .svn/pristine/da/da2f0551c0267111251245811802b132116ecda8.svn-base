@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>民主评议</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta http-equiv="Access-Control-Allow-Origin" content="*">
+<link href="../css/index.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="../js/autoview.js"></script>
+<style>
+	body{ height: 100%; background: #fff;}
+</style>
+</head>
+
+<body>
+<header class="pos_rela head_gg"><span style=" z-index:100; height:2.5rem; width:5rem;position:absolute; " tapmode="selected" onclick="fn_closeframe()"></span><a class="btnBack" style="border: 10px solid #f35957;border-right-color: #fff;width: 0;height: 0;"></a>民主评议</header>
+     <div class="py_1">
+     	<p style="width:90%; margin-left:5%; height:40px; line-height:40px; font-size:16px; ">评议人员名单:</p>
+        <div>
+        	<textarea rows="8" cols="30" id="mzpy_name" tapmode="selected" class="py_3"></textarea>
+        </div>
+
+        <div id="picarr"  class="picarr" style="width:90%; margin-left:5%;">
+        </div>
+        <p><input type="button" value="点击上传照片" tapmode="selected" onclick="fn_upladType()"  class="py_2" /></p>
+        <p><input type="button" id="tijiao" value="提交" tapmode="selected" onclick="fn_set()" class="py_2" style=" background:#f35957;" /></p>
+        <br />
+     </div>
+
+</body>
+
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+    apiready = function(){
+        api.execScript({
+            name:'main',
+            script:"keybackevent('pingyi_1');"
+        });
+        //alert(api.pageParam.id);
+    };
+    var imglist = "";
+    function fn_set(){
+    	if($api.val($api.byId('mzpy_name')) == ''){
+    		alert("请填写评议人员名单！");
+    		return false;
+    	}
+        if(imglist == ''){
+            alert('请上传现场照片');
+            return false;
+        }
+        document.getElementById('tijiao').disabled = 'false';
+    	api.ajax({
+			url: $api.getStorage('appbase')+'appbase/pingyi_1.php',
+			dataType:'json',
+            method: 'post',
+			data: {
+				values: {
+					method: 'set',
+					id : api.pageParam.id,
+                    username : $api.getStorage('username'),
+                    mzpy_name : $api.val($api.byId('mzpy_name')),
+					imglist : imglist
+				}
+			}
+		}, function(ret, err){
+			if(ret){
+				if(ret.state == 'true'){
+					alert('录入成功！');
+                    api.execScript({
+                        name:'main',
+                        script:'pageArraySplice();'
+                    });
+                    api.openFrame({
+                        name: 'pingyi_1_list',
+                        url: 'pingyi_1_list.html',
+                        reload: true,
+                        rect: {
+                            x: 0,
+                            y: $api.getStorage('statusbarH'),
+                            w: 'auto',
+                            h: $api.getStorage('frameHeight')
+                        },
+                        pageParam: {
+                            name: 'test'
+                        },
+                    });
+                    fn_closeframe();
+				}else{
+					alert('网络出错');
+				}
+			}else{
+                alert('网络出错');
+            }
+		});
+    }
+    function fn_upladType(){
+        api.confirm({
+              title: '',
+              msg: '请选择上传方式',
+              buttons: ['相册', '拍照']
+          }, function(ret, err){
+              var index = ret.buttonIndex;
+                if(index == 1)
+                {
+                  fn_UIMediaScanner();
+                }else if(index == 2){
+                    fn_getPicture();
+                }
+          });
+    }
+    function fn_UIMediaScanner(){
+        var UIMediaScanner = api.require('UIMediaScanner');
+        UIMediaScanner.open({
+            type: 'picture',
+            column: 4,
+            classify: true,
+            max: 9,
+            sort: {
+                key: 'time',
+                order: 'desc'
+            },
+            texts: {
+                stateText: '已选择*项',
+                cancelText: '取消',
+                finishText: '完成'
+            },
+            styles: {
+                bg: '#fff',
+                mark: {
+                    icon: '',
+                    position: 'bottom_left',
+                    size: 20
+                },
+                nav: {
+                    bg: '#eee',
+                    stateColor: '#000',
+                    stateSize: 18,
+                    cancelBg: 'rgba(0,0,0,0)',
+                    cancelColor: '#000',
+                    cancelSize: 18,
+                    finishBg: 'rgba(0,0,0,0)',
+                    finishColor: '#000',
+                    finishSize: 18
+                }
+            },
+            scrollToBottom: {
+                intervalTime: 3,
+                anim: true
+            },
+            exchange: true,
+            rotation: true
+        }, function(ret) {
+            if (ret) {
+                //alert(JSON.stringify(ret));
+                if (ret.eventType == 'confirm'){
+                    for (var i = 0; i < ret.list.length; i++) {
+                        fn_upload(ret.list[i].path);
+                    }
+                }
+            }
+        });
+    }
+    function fn_getPicture() {
+        api.getPicture({
+            sourceType: 'camera',
+            encodingType: 'jpg',
+            mediaValue: 'pic',
+            destinationType: 'url',
+            allowEdit: true,
+            quality: 90,
+            targetWidth: 800,
+            targetHeight: 800,
+            saveToPhotoAlbum: false
+        }, function(ret, err) {
+            if (ret) {
+                fn_upload(ret.data);
+            }
+        });
+    }
+    function fn_upload(path_){
+        api.ajax({
+            url: $api.getStorage('appbase')+'appbase/upload.php',
+            dataType:'json',
+            method: 'post',
+            data: {
+                values: {
+                    method: 'upload'
+                },
+                files: {
+                    file: path_
+                }
+            }
+        }, function(ret, err){
+            if(ret){
+                if(ret.state == 'true'){
+                    imglist += ret.msg + ",";
+                    $api.append($api.byId('picarr'), "<li id=\""+ret.msg+"\"><img src='"+$api.getStorage('appbase')+ret.msg+"' /><a tapmode=\"selected\" onclick=\"fn_deleteimg('"+ret.msg+"')\"></a></li>");
+                }
+            }
+        });
+    }
+    function fn_deleteimg(img_){
+    	$api.remove($api.byId(img_));
+    	imglist = imglist.replace(img_+',', '');
+    }
+    function fn_closeframe() {
+        api.execScript({
+            name:'main',
+            script:'pageArraySplice();'
+        });
+		api.closeFrame();
+    }
+</script>
+</html>

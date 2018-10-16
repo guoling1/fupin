@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>第二次入户</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta http-equiv="Access-Control-Allow-Origin" content="*">
+<link href="../css/index.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="../js/autoview.js"></script>
+<style>
+  body{ height: 100%; background: #fff;}
+</style>
+</head>
+
+<body>
+     <header class="pos_rela head_gg"><span style=" z-index:100; height:2.5rem; width:5rem;position:absolute; " tapmode="selected" onclick="fn_closeframe()"></span><a class="btnBack" style="border: 10px solid #f35957;border-right-color: #fff;width: 0;height: 0;"></a>数据统计</header>
+  <div style="width: 80%;margin:0 auto;overflow:hidden; ">
+  <div  style="float:left;height:3rem; line-height: 3rem;border-radius:10px; border:1px solid #ccc;margin-top:1rem;" >
+  <select tapmode="selected" id="steps" style="border: 0;">
+  <option value="">全部</option>
+  <option value="2">第一次入户</option>
+  <option value="3">第二次入户</option>
+  <option value="4">第三次入户</option>
+  <option value="5">评议通过</option>
+  </select>
+  </div>
+     <div class="search1" style="float: right;">
+          <input class="ru_4" type="text" id="keyword" style="line-height: normal;height:3rem;" tapmode="selected" placeholder="搜索户主名称...">
+          <button type="button" class="ru_5" style="width: 13%;" tapmode="selected" onclick="fn_search()"></button>
+       </div> 
+  </div>
+   <p class="ru_1"><span style="float:left; width: 60%;">姓名&nbsp;(身份证号)</span><span style="float:right;">时间</span></p>
+   <div class="ru_2" id="list">
+        
+   </div>
+   <div class="ru_2">
+   
+   </div>
+ </div> 
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+    apiready = function(){
+      api.execScript({
+            name:'main',
+            script:"keybackevent('tongji_list');"
+        });
+        fn_tongji_list();
+    };
+    function fn_tongji_list(){
+        api.ajax({
+            url: $api.getStorage('appbase')+'/appbase/tongji_list.php',
+            dataType:'json',
+            cache: true,
+            data: {
+        values: {
+          method: 'list',
+          username : $api.getStorage('username'),
+          keyword : $api.val($api.byId('keyword')),
+          steps : $api.val($api.byId('steps'))
+        }
+      }
+        }, function(ret, err){
+            if(ret){
+              if(ret.state == 'true'){
+          $api.html($api.byId('list'), ret.list);
+              }
+            }
+        });
+    }
+    function fn_search(){
+      //alert($api.val($api.byId('steps')));
+      fn_tongji_list();
+    }
+    function fn_closeframe() {
+      api.execScript({
+            name:'main',
+            script:'pageArraySplice();'
+        });
+      api.closeFrame();
+    }
+</script>
+</html>

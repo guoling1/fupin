@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title>第三次入户</title>
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta http-equiv="Access-Control-Allow-Origin" content="*">
+		<link href="../css/index.css" rel="stylesheet" type="text/css">
+		<link rel="stylesheet" href="../css/bellows.css">
+		<link rel="stylesheet" href="../css/bellows-theme.css">
+		<link rel="stylesheet" href="../css/lrtk.css">
+		<script type="text/javascript" src="../js/autoview.js"></script>
+		<style>
+			body {
+				height: 100%;
+				background: #fff;
+			}
+			
+			.dyc_3 div {
+				padding: 0px;
+				margin: 0;
+				width: auto;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="pos_rela head_gg"><span style=" z-index:100; height:2.5rem; width:5rem;position:absolute; " tapmode="selected" onclick="fn_closeframe()"></span>
+			<a class="btnBack" style="border: 10px solid #f35957;border-right-color: #fff;width: 0;height: 0;"></a>第三次入户</header>
+		<div style=" width:90%; margin-left:5%; ">
+			<div class="diyici">
+				<div class="dyc_3">
+					<h2>大名县精准识别入户评估表</h2>
+
+					<p>家庭住址：<input type="text" id="xiangzhen" tapmode="selected" placeholder="家庭住址" readonly class="dyc_4" /></p>
+					<p>户主姓名：<input type="text" id="huzhu" tapmode="selected" placeholder="户主姓名" readonly class="dyc_4" /></p>
+					<p>身份证号：<input type="text" id="sfzh" tapmode="selected" placeholder="身份证号" readonly class="dyc_4" /></p>
+					<p>家庭人口：<input type="text" id="jiatingrenkou" tapmode="selected" placeholder="总数" class="dyc_4" /></p>
+					<p>评估时间：<input type="text" id="nian" tapmode="selected" placeholder="" class="dyc_4" /></p>
+
+				</div>
+				<div class="dyc_3">
+					<br />
+					<p>种植业：<input type="text" id="zzy" tapmode="selected" placeholder="金额（元）" class="dyc_4" /></p>
+					<p>林果业：<input type="text" id="lgy" tapmode="selected" placeholder="金额（元）" class="dyc_4" /></p>
+					<p>养殖业：<input type="text" id="yzy" tapmode="selected" placeholder="金额（元）" class="dyc_4" /></p>
+					<p>旅游业：<input type="text" id="lyy" tapmode="selected" placeholder="金额（元）" class="dyc_4" /></p>
+					<p>赡养费：<input type="text" id="syf" tapmode="selected" placeholder="金额（元）" class="dyc_4" /></p>
+					<p>退休金：<input type="text" id="txj" tapmode="selected" placeholder="金额（元）" class="dyc_4" /></p>
+				</div>
+				<div class="dyc_3">
+					<br />
+					<p>工资性收入：<input type="text" id="gzxsr" tapmode="selected" placeholder="金额（元）" class="dyc_4" />*</p>
+					<p>财产性收入：<input type="text" id="ccxsr" tapmode="selected" placeholder="金额（元）" class="dyc_4" />*</p>
+					<p>转移性收入：<input type="text" id="zyxsr" tapmode="selected" placeholder="金额（元）" class="dyc_4" />*</p>
+					<p>家庭手工业：<input type="text" id="jtsgy" tapmode="selected" placeholder="金额（元）" class="dyc_4" /></p>
+					<p>残疾人补贴：<input type="text" id="cjrbt" tapmode="selected" placeholder="金额（元）" class="dyc_4" /></p>
+				</div>
+				<div class="dyc_3"><br />
+					<p>农业综合补贴：<input type="text" id="nyzhbt" tapmode="selected" placeholder="金额（元）" class="dyc_4" /></p>
+					<p>土地流转底金：<input type="text" id="tdlzdj" tapmode="selected" placeholder="金额（元）" class="dyc_4" /></p>
+					<p>银行存款利息：<input type="text" id="yhcklx" tapmode="selected" placeholder="金额（元）" class="dyc_4" /></p>
+					<p>家庭年纯收入：<input type="text" id="jtncsr" tapmode="selected" placeholder="金额（元）" class="dyc_4" /></p>
+
+				</div>
+				<div class="dyc_3">
+					<br />
+					<p>其他（如股票等有价证劵）：<input type="text" id="ccxsrqt" tapmode="selected" placeholder="金额（元）" class="dyc_4" /></p>
+				</div>
+				<div class="dyc_3">
+					<br />
+					<p>商贸流通（含电子商务）：<input type="text" id="smlt" tapmode="selected" placeholder="金额（元）" class="dyc_4" /></p>
+				</div>
+				<div class="dyc_3">
+					<br />
+					<p>生态补偿金（如退耕还林、公益林）：<input type="text" id="stbcj" tapmode="selected" placeholder="金额（元）" class="dyc_4" /></p>
+				</div>
+				<div class="dyc_3">
+					<br />
+					<p> 农户加入龙头企业或农业合作社分红收入：<input type="text" id="fhsr" tapmode="selected" placeholder="金额（元）" class="dyc_4" /></p>
+				</div>
+				<div class="dyc_3">
+					<br />
+					<p>其他（民政救济、长期性赠送、农业保险理赔或捐助等）：<input type="text" id="zyxsrqt" tapmode="selected" placeholder="金额（元）" class="dyc_4" /></p>
+				</div>
+				<div class="dyc_3">
+					<br />
+					<p> 实际家庭年人均纯收入：<input type="text" id="jtnrjcsr" tapmode="selected" placeholder="金额（元）" class="dyc_4" /></p>
+				</div>
+				<div class="dyc_3">
+					<p class="dyc_7">住房安全
+						<input type="radio" name="zfaq" tapmode="selected" value="是">是
+						<input type="radio" name="zfaq" tapmode="selected" value="否" checked>否</p>
+					<p>(实际住房情况是否安全)</p>
+				</div>
+				<div class="dyc_3">
+					<p class="dyc_7">饮水安全
+						<input type="radio" name="ysaq" tapmode="selected" value="是">是
+						<input type="radio" name="ysaq" tapmode="selected" value="否" checked>否</p>
+					<p>(实际饮水情况是否安全)</p>
+				</div>
+				<div class="dyc_3">
+					<p class="dyc_7">教育情况
+						<input type="radio" name="jyqk" tapmode="selected" value="有">有
+						<input type="radio" name="jyqk" tapmode="selected" value="无" checked>无</p>
+					<p>(有无因贫辍学学生)</p>
+				</div>
+				<div class="dyc_3">
+					<p class="dyc_7">医疗保障
+						<input type="radio" name="ylbz" tapmode="selected" value="是">是
+						<input type="radio" name="ylbz" tapmode="selected" value="否" checked>否</p>
+					<p>(是否因病债务较重或经济困难没有及时进行治疗的)</p>
+				</div>
+
+				
+
+				
+				<p style="width:100%; text-align:left; margin:10px 0;">
+					<a style="color:#333; font-size:12px;" tapmode="selected" onclick="go_wendang()">*点击查看文档说明</a>
+				</p>
+				<div id="picarr" class="picarr">
+				</div>
+				<p><input type="button" value="点击上传照片" tapmode="selected" onclick="fn_upladType()" class="py_2" style="margin-left:0;" /></p>
+				<p><input type="button" id="tijiao" value="提交" tapmode="selected" onclick="fn_set()" class="py_2" style=" background:#f35957;margin-left:0;" /></p>
+			</div>
+			<script src="../js/zepto.min.js"></script>
+			<script src="../js/index.js"></script>
+	</body>
+
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript">
+		apiready = function() {
+			api.execScript({
+				name: 'main',
+				script: "keybackevent('ruhu_3');"
+			});
+			//alert(api.pageParam.id);
+			//
+			fn_get();
+		};
+		var imglist = "";
+
+		function fn_get() {
+			api.ajax({
+				url: $api.getStorage('appbase') + '/appbase/ruhu_3.php?method=get&id=' + api.pageParam.id,
+				dataType: 'json',
+				cache: true,
+			}, function(ret, err) {
+				if(ret) {
+					if(ret.state == 'true') {
+						$api.val($api.byId('xiangzhen'), ret.xiangzhen);
+						$api.val($api.byId('huzhu'), ret.huzhu);
+						$api.val($api.byId('sfzh'), ret.sfzh);
+						$api.val($api.byId('jiatingrenkou'), ret.jtrk);
+						$api.val($api.byId('nian'), ret.nian);
+					}
+				}
+			});
+		}
+
+		function fn_set() {
+			if(imglist == '') {
+				alert('请上传现场照片');
+				return false;
+			}
+			document.getElementById('tijiao').disabled = 'false';
+			api.ajax({
+				url: $api.getStorage('appbase') + 'appbase/ruhu_3.php',
+				dataType: 'json',
+				method: 'post',
+				data: {
+					values: {
+						method: 'set',
+						id: api.pageParam.id,
+						username: $api.getStorage('username'),
+						jiatingrenkou: $api.val($api.byId('jiatingrenkou')),
+						nian: $api.val($api.byId('nian')),
+						zzy: $api.val($api.byId('zzy')),
+						lgy: $api.val($api.byId('lgy')),
+						yzy: $api.val($api.byId('yzy')),
+						lyy: $api.val($api.byId('lyy')),
+						syf: $api.val($api.byId('syf')),
+						txj: $api.val($api.byId('txj')),
+						gzxsr: $api.val($api.byId('gzxsr')),
+						ccxsr: $api.val($api.byId('ccxsr')),
+						zyxsr: $api.val($api.byId('zyxsr')),
+						jtsgy: $api.val($api.byId('jtsgy')),
+						cjrbt: $api.val($api.byId('cjrbt')),
+						nyzhbt: $api.val($api.byId('nyzhbt')),
+						tdlzdj: $api.val($api.byId('tdlzdj')),
+						yhcklx: $api.val($api.byId('yhcklx')),
+						jtncsr: $api.val($api.byId('jtncsr')),
+						ccxsrqt: $api.val($api.byId('ccxsrqt')),
+						smlt: $api.val($api.byId('smlt')),
+						stbcj: $api.val($api.byId('stbcj')),
+						fhsr: $api.val($api.byId('fhsr')),
+						zyxsrqt: $api.val($api.byId('zyxsrqt')),
+						jtnrjcsr: $api.val($api.byId('jtnrjcsr')),
+						zfaq: $('input[name="zfaq"]:checked').val(),
+						ysaq: $('input[name="ysaq"]:checked').val(),
+						jyqk: $('input[name="jyqk"]:checked').val(),
+						ylbz: $('input[name="ylbz"]:checked').val(),
+						imglist: imglist
+					}
+				}
+			}, function(ret, err) {
+				if(ret) {
+					if(ret.state == 'true') {
+						alert('录入成功！');
+						api.execScript({
+							name: 'main',
+							script: 'pageArraySplice();'
+						});
+						api.openFrame({
+							name: 'ruhu_3_list',
+							url: 'ruhu_3_list.html',
+							reload: true,
+							rect: {
+								x: 0,
+								y: $api.getStorage('statusbarH'),
+								w: 'auto',
+								h: $api.getStorage('frameHeight')
+							},
+							pageParam: {
+								name: 'test'
+							},
+						});
+
+						fn_closeframe();
+					} else {
+						alert('网络出错');
+					}
+				} else {
+					alert('网络出错');
+				}
+			});
+		}
+		function fn_upladType(){
+	        api.confirm({
+	              title: '',
+	              msg: '请选择上传方式',
+	              buttons: ['相册', '拍照']
+	          }, function(ret, err){
+	              var index = ret.buttonIndex;
+	                if(index == 1)
+	                {
+	                  fn_UIMediaScanner();
+	                }else if(index == 2){
+	                    fn_getPicture();
+	                }
+	          });
+	    }
+		function fn_UIMediaScanner() {
+			var UIMediaScanner = api.require('UIMediaScanner');
+			UIMediaScanner.open({
+				type: 'picture',
+				column: 4,
+				classify: true,
+				max: 9,
+				sort: {
+					key: 'time',
+					order: 'desc'
+				},
+				texts: {
+					stateText: '已选择*项',
+					cancelText: '取消',
+					finishText: '完成'
+				},
+				styles: {
+					bg: '#fff',
+					mark: {
+						icon: '',
+						position: 'bottom_left',
+						size: 20
+					},
+					nav: {
+						bg: '#eee',
+						stateColor: '#000',
+						stateSize: 18,
+						cancelBg: 'rgba(0,0,0,0)',
+						cancelColor: '#000',
+						cancelSize: 18,
+						finishBg: 'rgba(0,0,0,0)',
+						finishColor: '#000',
+						finishSize: 18
+					}
+				},
+				scrollToBottom: {
+					intervalTime: 3,
+					anim: true
+				},
+				exchange: true,
+				rotation: true
+			}, function(ret) {
+				if(ret) {
+					//alert(JSON.stringify(ret));
+					if(ret.eventType == 'confirm') {
+						for(var i = 0; i < ret.list.length; i++) {
+							fn_upload(ret.list[i].path);
+						}
+					}
+				}
+			});
+		}
+
+		function fn_getPicture() {
+			api.getPicture({
+				sourceType: 'camera',
+				encodingType: 'jpg',
+				mediaValue: 'pic',
+				destinationType: 'url',
+				allowEdit: true,
+				quality: 90,
+				targetWidth: 800,
+				targetHeight: 800,
+				saveToPhotoAlbum: false
+			}, function(ret, err) {
+				if(ret) {
+					fn_upload(ret.data);
+				}
+			});
+		}
+
+		function fn_upload(path_) {
+			api.ajax({
+				url: $api.getStorage('appbase') + 'appbase/upload.php',
+				dataType: 'json',
+				method: 'post',
+				data: {
+					values: {
+						method: 'upload'
+					},
+					files: {
+						file: path_
+					}
+				}
+			}, function(ret, err) {
+				if(ret) {
+					if(ret.state == 'true') {
+						imglist += ret.msg + ",";
+						$api.append($api.byId('picarr'), "<li id=\"" + ret.msg + "\"><img src='" + $api.getStorage('appbase') + ret.msg + "' /><a tapmode=\"selected\" onclick=\"fn_deleteimg('" + ret.msg + "')\"></a></li>");
+					}
+				}
+			});
+		}
+
+		function fn_deleteimg(img_) {
+			$api.remove($api.byId(img_));
+			imglist = imglist.replace(img_ + ',', '');
+		}
+
+		function go_wendang() {
+			api.openFrame({
+				name: 'wendang',
+				url: 'wendang.html',
+				rect: {
+					x: 0,
+					y: $api.getStorage('statusbarH'),
+					w: 'auto',
+					h: $api.getStorage('frameHeight')
+				},
+				pageParam: {
+					name: 'test'
+				},
+			});
+		}
+
+		function fn_closeframe() {
+			api.execScript({
+				name: 'main',
+				script: 'pageArraySplice();'
+			});
+			api.closeFrame();
+		}
+	</script>
+
+</html>

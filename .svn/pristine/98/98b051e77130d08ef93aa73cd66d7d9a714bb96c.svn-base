@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title>第一次入户</title>
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta http-equiv="Access-Control-Allow-Origin" content="*">
+		<link href="../css/index.css" rel="stylesheet" type="text/css">
+		<link rel="stylesheet" href="../css/bellows.css">
+		<link rel="stylesheet" href="../css/bellows-theme.css">
+		<link rel="stylesheet" href="../css/lrtk.css">
+		<script type="text/javascript" src="../js/autoview.js"></script>
+		<style>
+			body {
+				height: 100%;
+				background: #fff;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="pos_rela head_gg"><span style=" z-index:100; height:2.5rem; width:5rem;position:absolute; " tapmode="selected" onclick="fn_closeframe()"></span>
+			<a class="btnBack" style="border: 10px solid #f35957;border-right-color: #fff;width: 0;height: 0;"></a>第二次入户</header>
+
+		<div style=" width:90%; margin-left:5%; ">
+			<div class="diyici">
+				<div class="dyc_3">
+					<h2>大名县家庭情况调查表</h2>
+					<p style="margin-bottom:10px;">
+						选择自愿申请<input type="radio" name="sqlx" tapmode="selected" value="自愿申请" style="margin-right:3rem;" checked>代为申请
+						<input type="radio" name="sqlx" tapmode="selected" value="代为申请"></p>
+					<p>家庭住址：<input type="text" id="xiangzhen" placeholder="家庭住址" readonly class="dyc_4" /></p>
+					<p>户主姓名：<input type="text" id="huzhu" placeholder="户主姓名" readonly class="dyc_4" /></p>
+					<p>身份证号：<input type="text" id="sfzh" placeholder="身份证号" readonly class="dyc_4" /></p>
+					<p>家庭人口：<input type="text" id="jiatingrenkou" tapmode="selected" placeholder="总数" class="dyc_4" /></p>
+
+				</div>
+
+				<div class="dyc_3">
+					<p class="dyc_7">家庭成员中有在国家机关或企事业单位工作且有稳定工资收入的</p>
+					<input type="radio" name="B1" value="是" tapmode="selected">是
+					<input type="radio" name="B1" value="否" tapmode="selected" checked>否
+
+				</div>
+				<div class="dyc_3">
+					<p class="dyc_7">家庭成员中有任村支部书记或村委会主任的</p>
+					<input type="radio" name="B2" value="是" tapmode="selected">是
+					<input type="radio" name="B2" value="否" tapmode="selected" checked>否
+
+				</div>
+				<div class="dyc_3">
+					<p class="dyc_7">家庭有在城镇购买商品房、门市房的（不含因灾重建、易地扶贫搬迁和拆迁建房）</p>
+					<input type="radio" name="B3" value="是" tapmode="selected">是
+					<input type="radio" name="B3" value="否" tapmode="selected" checked>否
+
+				</div>
+				<div class="dyc_3">
+					<p class="dyc_7">家庭成员中拥有小轿车（含面包车）</p>
+					<input type="radio" name="B4" value="是" tapmode="selected">是
+					<input type="radio" name="B4" value="否" tapmode="selected" checked>否
+
+				</div>
+				<div class="dyc_3">
+					<p class="dyc_7">家庭成员有作为企业法人或股东在工商部门注册有企业且有年审记录的，或长期雇佣他人从事生产经营活动的</p>
+					<input type="radio" name="B5" value="是" tapmode="selected">是
+					<input type="radio" name="B5" value="否" tapmode="selected" checked>否
+
+				</div>
+				<div class="dyc_3">
+					<p class="dyc_7">举家长年在外（1年以上）并且失联的</p>
+					<input type="radio" name="B6" value="是" tapmode="selected">是
+					<input type="radio" name="B6" value="否" tapmode="selected" checked>否
+
+				</div>
+				<p style="width:100%; text-align:left; margin:10px 0;">
+					<a style="color:#333; font-size:12px;" tapmode="selected" onclick="go_wendang()">*点击查看文档说明</a>
+				</p>
+				<div id="picarr" class="picarr">
+				</div>
+				<p><input type="button" value="点击上传照片" tapmode="selected" onclick="fn_upladType()" class="py_2" style="margin-left:0;" /></p>
+				<p><input type="button" id="tijiao" value="提交" tapmode="selected" onclick="fn_set()" class="py_2" style=" background:#f35957;margin-left:0;" /></p>
+
+			</div>
+			<script src="../js/zepto.min.js"></script>
+			<script src="../js/index.js"></script>
+	</body>
+
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript">
+		var imglist = "";
+		apiready = function() {
+			//alert(api.pageParam.id);
+			api.execScript({
+				name: 'main',
+				script: "keybackevent('ruhu_2');"
+			});
+			fn_get();
+		};
+
+		function fn_get() {
+			api.ajax({
+				url: $api.getStorage('appbase') + '/appbase/ruhu_2.php?method=get&id=' + api.pageParam.id,
+				dataType: 'json',
+				cache: true,
+			}, function(ret, err) {
+				if(ret) {
+					if(ret.state == 'true') {
+						$api.val($api.byId('xiangzhen'), ret.xiangzhen);
+						$api.val($api.byId('huzhu'), ret.huzhu);
+						$api.val($api.byId('sfzh'), ret.sfzh);
+						$api.val($api.byId('jiatingrenkou'), ret.jtrk);
+					}
+				}
+			});
+		}
+
+		function fn_set() {
+			if(imglist == '') {
+				alert('请上传现场照片');
+				return false;
+			}
+			document.getElementById('tijiao').disabled = 'false';
+			api.ajax({
+				url: $api.getStorage('appbase') + 'appbase/ruhu_2.php',
+				dataType: 'json',
+				method: 'post',
+				data: {
+					values: {
+						method: 'set',
+						id: api.pageParam.id,
+						username: $api.getStorage('username'),
+						sqlx: $('input[name="sqlx"]:checked').val(),
+						jiatingrenkou: $api.val($api.byId('jiatingrenkou')),
+						B1: $('input[name="B1"]:checked').val(),
+						B2: $('input[name="B2"]:checked').val(),
+						B3: $('input[name="B3"]:checked').val(),
+						B4: $('input[name="B4"]:checked').val(),
+						B5: $('input[name="B5"]:checked').val(),
+						B6: $('input[name="B6"]:checked').val(),
+						imglist: imglist
+					}
+				}
+			}, function(ret, err) {
+				if(ret) {
+					if(ret.state == 'true') {
+						alert('录入成功！');
+						api.execScript({
+							name: 'main',
+							script: 'pageArraySplice();'
+						});
+						api.openFrame({
+							name: 'ruhu_2_list',
+							url: 'ruhu_2_list.html',
+							reload: true,
+							rect: {
+								x: 0,
+								y: $api.getStorage('statusbarH'),
+								w: 'auto',
+								h: $api.getStorage('frameHeight')
+							},
+							pageParam: {
+								name: 'test'
+							},
+						});
+						fn_closeframe();
+
+					} else {
+						alert('网络出错');
+					}
+				} else {
+					alert('网络出错');
+				}
+			});
+		}
+		function fn_upladType(){
+	        api.confirm({
+	              title: '',
+	              msg: '请选择上传方式',
+	              buttons: ['相册', '拍照']
+	          }, function(ret, err){
+	              var index = ret.buttonIndex;
+	                if(index == 1)
+	                {
+	                  fn_UIMediaScanner();
+	                }else if(index == 2){
+	                    fn_getPicture();
+	                }
+	          });
+	    }
+		function fn_upload(path_) {
+			api.ajax({
+				url: $api.getStorage('appbase') + 'appbase/upload.php',
+				dataType: 'json',
+				method: 'post',
+				data: {
+					values: {
+						method: 'upload'
+					},
+					files: {
+						file: path_
+					}
+				}
+			}, function(ret, err) {
+				if(ret) {
+					if(ret.state == 'true') {
+						imglist += ret.msg + ",";
+						$api.append($api.byId('picarr'), "<li id=\"" + ret.msg + "\"><img src='" + $api.getStorage('appbase') + ret.msg + "' /><a tapmode=\"selected\" onclick=\"fn_deleteimg('" + ret.msg + "')\"></a></li>");
+					}
+				}
+			});
+		}
+
+	function fn_UIMediaScanner() {
+			var UIMediaScanner = api.require('UIMediaScanner');
+			UIMediaScanner.open({
+				type: 'picture',
+				column: 4,
+				classify: true,
+				max: 9,
+				sort: {
+					key: 'time',
+					order: 'desc'
+				},
+				texts: {
+					stateText: '已选择*项',
+					cancelText: '取消',
+					finishText: '完成'
+				},
+				styles: {
+					bg: '#fff',
+					mark: {
+						icon: '',
+						position: 'bottom_left',
+						size: 20
+					},
+					nav: {
+						bg: '#eee',
+						stateColor: '#000',
+						stateSize: 18,
+						cancelBg: 'rgba(0,0,0,0)',
+						cancelColor: '#000',
+						cancelSize: 18,
+						finishBg: 'rgba(0,0,0,0)',
+						finishColor: '#000',
+						finishSize: 18
+					}
+				},
+				scrollToBottom: {
+					intervalTime: 3,
+					anim: true
+				},
+				exchange: true,
+				rotation: true
+			}, function(ret) {
+				if(ret) {
+					//alert(JSON.stringify(ret));
+					if(ret.eventType == 'confirm') {
+						for(var i = 0; i < ret.list.length; i++) {
+							fn_upload(ret.list[i].path);
+						}
+					}
+				}
+			});
+		}
+
+		function fn_getPicture() {
+			api.getPicture({
+				sourceType: 'camera',
+				encodingType: 'jpg',
+				mediaValue: 'pic',
+				destinationType: 'url',
+				allowEdit: true,
+				quality: 90,
+				targetWidth: 800,
+				targetHeight: 800,
+				saveToPhotoAlbum: false
+			}, function(ret, err) {
+				if(ret) {
+					fn_upload(ret.data);
+				}
+			});
+		}
+
+		function fn_deleteimg(img_) {
+			$api.remove($api.byId(img_));
+			imglist = imglist.replace(img_ + ',', '');
+		}
+
+		function go_wendang() {
+			api.openFrame({
+				name: 'wendang',
+				url: 'wendang.html',
+				rect: {
+					x: 0,
+					y: $api.getStorage('statusbarH'),
+					w: 'auto',
+					h: $api.getStorage('frameHeight')
+				},
+				pageParam: {
+					name: 'test'
+				},
+			});
+		}
+
+		function fn_closeframe() {
+			api.execScript({
+				name: 'main',
+				script: 'pageArraySplice();'
+			});
+			api.closeFrame();
+		}
+	</script>
+
+</html>

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>公示公告</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta http-equiv="Access-Control-Allow-Origin" content="*">
+<link href="../css/index.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="../css/bellows.css">
+<link rel="stylesheet" href="../css/bellows-theme.css">
+<link rel="stylesheet" href="../css/lrtk.css">
+<script type="text/javascript" src="../js/autoview.js"></script>
+<style>
+	body{ height: 100%; background: #fff;}
+	input::-webkit-input-placeholder {text-align: center;}
+    .dyc_3 div{ padding: 0px; margin:0; width: auto; }
+</style>
+</head>
+
+<body>
+    <header class="pos_rela head_gg"><span style=" z-index:100; height:2.5rem; width:5rem;position:absolute; " tapmode="selected" onclick="fn_closeframe()"></span><a class="btnBack" style="border: 10px solid #f35957;border-right-color: #fff;width: 0;height: 0;"></a>公示公告</header>
+<div style=" width:90%; margin-left:5%; ">
+	<div class="diyici">
+		<div class="dyc_3">
+			<h2></h2>
+            <p id="cun_p">
+			<input type="hidden" id="xiangzhen" />
+            </p>
+		</div>
+    </div>
+    <div id="picarr" class="picarr">
+
+    </div>
+
+    <p><input type="button" value="上传照片" tapmode="selected" onclick="fn_upladType()" class="py_2" /></p>
+    <p><input type="button" id="tijiao" value="提交" tapmode="selected" onclick="fn_set()" class="py_2" style=" background:#f35957;" /></p>
+    <p>&nbsp;</p>
+</div>
+<script src="../js/zepto.min.js"></script>
+<script src="../js/index.js"></script>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+	var imglist = "";
+    apiready = function(){
+        api.execScript({
+            name:'main',
+            script:"keybackevent('gsgg');"
+        });
+        fn_get();
+    };
+    function fn_getimg(){
+    	imglist = "";
+		$api.html($api.byId('picarr'), "");
+    	if($api.val($api.byId('cun')) != ''){
+    		api.ajax({
+	            url: $api.getStorage('appbase')+'/appbase/gsgg.php',
+	            dataType:'json',
+	            method: 'post',
+	            data: {
+					values: {
+						method: 'getimg',
+	                    username : $api.getStorage('username'),
+	                    xiangzhen : $api.val($api.byId('xiangzhen')),
+	                    cun : $api.val($api.byId('cun'))
+					}
+				}
+	        }, function(ret, err){
+	            if(ret){
+	                if(ret.state == 'true'){
+	                    $api.html($api.byId('picarr'), ret.list);
+	                }
+	            }
+	        });
+    	}
+    }
+
+    function fn_set(){
+    	if($api.val($api.byId('cun')) == ''){
+            alert('请选择行政村');
+            return false;
+        }
+		if(imglist == ''){
+            alert('请上传照片');
+            return false;
+        }
+        document.getElementById('tijiao').disabled = 'false';
+        api.ajax({
+			url: $api.getStorage('appbase')+'appbase/gsgg.php',
+			dataType:'json',
+            method: 'post',
+			data: {
+				values: {
+					method: 'set',
+                    username : $api.getStorage('username'),
+                    xiangzhen : $api.val($api.byId('xiangzhen')),
+                    cun : $api.val($api.byId('cun')),
+					imglist : imglist
+				}
+			}
+		}, function(ret, err){
+			if(ret){
+				if(ret.state == 'true'){
+                    alert('上传成功！');
+                    fn_closeframe();
+				}else{
+					alert('网络出错');
+				}
+			}else{
+                alert('网络出错1');
+            }
+		});
+    }
+    function fn_get(){
+        api.ajax({
+            url: $api.getStorage('appbase')+'/appbase/gsgg.php?method=get&username='+$api.getStorage('username'),
+            dataType:'json',
+            cache: true,
+        }, function(ret, err){
+            if(ret){
+                if(ret.state == 'true'){
+                    $api.val($api.byId('xiangzhen'), ret.xiangzhen);
+                    $api.append($api.byId('cun_p'), ret.cun);
+                }
+            }
+        });
+    }
+    
+    function fn_upload(path_){
+        api.ajax({
+            url: $api.getStorage('appbase')+'appbase/upload.php',
+            dataType:'json',
+            method: 'post',
+            data: {
+                values: {
+                    method: 'upload'
+                },
+                files: {
+                    file: path_
+                }
+            }
+        }, function(ret, err){
+            if(ret){
+                if(ret.state == 'true'){
+                    imglist += ret.msg + ",";
+                    $api.append($api.byId('picarr'), "<li id=\""+ret.msg+"\"><img src='"+$api.getStorage('appbase')+ret.msg+"' /><a tapmode=\"selected\" onclick=\"fn_deleteimg('"+ret.msg+"')\"></a></li>");
+                }
+            }
+        });
+    }
+    function fn_upladType(){
+        if($api.val($api.byId('cun')) == ''){
+            alert('请选择行政村');
+            return false;
+        }
+        api.confirm({
+              title: '',
+              msg: '请选择上传方式',
+              buttons: ['相册', '拍照']
+          }, function(ret, err){
+              var index = ret.buttonIndex;
+                if(index == 1)
+                {
+                  //fn_UIMediaScanner();
+                  fn_getPicture_album();
+                }else if(index == 2){
+                    fn_getPicture();
+                }
+          });
+    }
+    function fn_getPicture() {
+        //library            //图片库
+        //camera            //相机
+        //album            //相册
+        api.getPicture({
+            sourceType: 'camera',
+            encodingType: 'jpg',
+            mediaValue: 'pic',
+            destinationType: 'url',
+            allowEdit: true,
+            quality: 90,
+            targetWidth: 800,
+            targetHeight: 800,
+            saveToPhotoAlbum: false
+        }, function(ret, err) {
+            if (ret) {
+                fn_upload(ret.data);
+            }
+        });
+    }
+    function fn_getPicture_album() {
+        api.getPicture({
+            sourceType: 'album',
+            encodingType: 'jpg',
+            mediaValue: 'pic',
+            destinationType: 'url',
+            allowEdit: true,
+            quality: 90,
+            targetWidth: 800,
+            targetHeight: 800,
+            saveToPhotoAlbum: false
+        }, function(ret, err) {
+            if (ret) {
+                fn_upload(ret.data);
+            }
+        });
+    }
+	
+    function fn_deleteimg(img_){
+        $api.remove($api.byId(img_));
+        imglist = imglist.replace(img_+',', '');
+    }
+    function fn_deleteimgall(id_){
+        api.ajax({
+			url: $api.getStorage('appbase')+'appbase/gsgg.php',
+			dataType:'json',
+            method: 'post',
+			data: {
+				values: {
+					method: 'del',
+                    id : id_
+				}
+			}
+		}, function(ret, err){
+			if(ret){
+				if(ret.state == 'true'){
+                    $api.remove($api.byId("img"+id_));
+				}
+			}else{
+                alert('网络出错');
+            }
+		});
+    }
+
+    function fn_closeframe() {
+        api.execScript({
+            name:'main',
+            script:'pageArraySplice();'
+        });
+		api.closeFrame();
+    }
+</script>
+</html>

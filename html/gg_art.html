@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>公示公告</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta http-equiv="Access-Control-Allow-Origin" content="*">
+<link href="../css/index.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="../js/autoview.js"></script>
+<style>
+    body{ height: 100%; background: #fff;}
+</style>
+</head>
+
+<body>
+<header class="pos_rela head_gg"><span style=" z-index:100; height:2.5rem; width:5rem;position:absolute; " tapmode="selected" onclick="fn_closeframe()"></span><a class="btnBack" style="border: 10px solid #f35957;border-right-color: #fff;width: 0;height: 0;"></a>公示公告</header>
+
+<div class="gg_1">
+    <h2 id="title"></h2>
+    <h3 id="time"></h3>
+    <div id="context" style="width: 100%;">
+    <p></p>
+    <p></p>
+    </div>
+</div>
+
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+    apiready = function(){
+        api.execScript({
+            name:'main',
+            script:"keybackevent('gg_art');"
+        });
+        //alert(api.pageParam.id);
+        news_art();
+    };
+    function news_art(){
+        api.ajax({
+            url: $api.getStorage('appbase')+'/appbase/gg_art.php?id='+api.pageParam.id,
+            dataType:'json',
+            cache: true,
+        }, function(ret, err){
+            if(ret){
+                if(ret.state == 'true'){
+                    $api.text($api.byId('title'), ret.title);
+                    $api.html($api.byId('time'), ret.time);
+                    $api.html($api.byId('context'), ret.context);
+                }else
+                {
+                    alert('网络出错');
+                    api.closeFrame();
+                }
+            }
+        });
+    }
+    function fn_closeframe() {
+        api.execScript({
+            name:'main',
+            script:'pageArraySplice();'
+        });
+        api.closeFrame();
+    }
+</script>
+</html>

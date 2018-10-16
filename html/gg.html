@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>公示公告</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta http-equiv="Access-Control-Allow-Origin" content="*">
+<link href="../css/index.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="../js/autoview.js"></script>
+<style>
+	body{ height: 100%; background: #fff;}
+</style>
+</head>
+
+<body>
+<header class="pos_rela head_gg"><span style=" z-index:100; height:2.5rem; width:5rem;position:absolute; " tapmode="selected" onclick="fn_closeframe()"></span><a class="btnBack" style="border: 10px solid #f35957;border-right-color: #fff;width: 0;height: 0;"></a>公示公告</header>
+<nav class="pos_rela">
+    <ul class="nav">
+        <li class="active" tapmode="selected" onclick="fn_setclassid(2)">县</li>
+        <li tapmode="selected" onclick="fn_setclassid(3)">乡</li>
+        <li tapmode="selected" onclick="fn_setclassid(4)">村</li>
+    </ul>
+</nav>
+<section class="pos_rela">  
+    <ul class="cont_gg">
+        <p class="ru_1"><span style="float:left;">标题</span><span style="float:right;">时间</span></p>
+	   <div class="ru_2" id="list">
+
+	   </div>
+    </ul>   
+</section>
+
+<script src="../js/zepto.min.js"></script>
+<script src="../js/index.js"></script>
+
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+	var classid = 2;
+	var num;
+    apiready = function(){
+        api.execScript({
+            name:'main',
+            script:"keybackevent('gg');"
+        });
+    	num = 1; 
+        api.setRefreshHeaderInfo({
+            loadingImg: 'widget://image/refresh.png',
+            bgColor: '#ccc',
+            textColor: '#fff',
+            textDown: '下拉刷新...',
+            textUp: '松开刷新...'
+        }, function(ret, err) {
+            gg();
+            num = 1;
+            api.refreshHeaderLoadDone();
+        });
+
+        api.addEventListener({
+            name:'scrolltobottom',
+            extra:{
+                threshold:0
+            }
+        }, function(ret, err){        
+            ggpage();
+        });
+        gg();
+    };
+    function gg(){
+        api.ajax({
+            url: $api.getStorage('appbase')+'/appbase/gg.php?method=news&classid='+classid,
+            dataType:'json',
+            cache: true,
+        }, function(ret, err){
+            if(ret){
+               $api.html($api.byId('list'), ret.list);
+            }
+        });
+    }
+    function ggpage(){
+        api.ajax({
+            url: $api.getStorage('appbase')+'/appbase/gg.php?method=newspage&classid='+classid+'&page='+num,
+            dataType:'json',
+            cache: true,
+        }, function(ret, err){
+            if(ret){
+
+               $api.append($api.byId('list'), ret.list);
+               num++;
+            }
+        });
+    }
+    function go_gg_art(id_){
+    	api.openFrame({
+            name: 'gg_art',
+            url: 'gg_art.html',
+            rect: {
+                x: 0,
+                y: $api.getStorage('statusbarH'),
+                w: 'auto',
+                h: $api.getStorage('frameHeight')
+            },
+            pageParam: {
+                id: id_
+            },
+        });
+    }
+    function fn_setclassid(id_){
+    	classid = id_;
+    	gg();
+    }
+    function fn_closeframe() {
+        api.execScript({
+            name:'main',
+            script:'pageArraySplice();'
+        });
+		api.closeFrame();
+    }
+</script>
+</html>

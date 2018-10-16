@@ -1,0 +1,68 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, initial-scale=1.0, width=device-width"/>
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title></title>
+	<style>
+		body{ height: 100%;}
+	</style>
+</head>
+<body>
+    <div id="statusbar" style=" background: #000; padding: 0; margin: 0; height: 0px;"></div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+    apiready = function(){
+        var statusbar = $api.byId('statusbar');
+        $api.fixStatusBar(statusbar);
+        statusbarH = $api.offset(statusbar);
+
+        fHeight = api.winHeight - statusbarH.h;
+
+        if(!$api.getStorage('statusbarH')){
+            $api.setStorage('statusbarH', statusbarH.h);
+        }
+        if(!$api.getStorage('frameHeight')){
+            $api.setStorage('frameHeight', fHeight);
+        }
+
+        api.openFrame({
+    	    name: 'index',
+    	    url: 'index.html',
+    	    rect: {
+    	        x: 0,
+    	        y: statusbarH.h,
+    	        w: 'auto',
+    	        h: fHeight
+    	    },
+    	    pageParam: {
+    	        name: 'test'
+    	    },
+    	});
+
+    };
+    var pageArray = new Array();
+    function keybackevent(name_) {
+        if(pageArray[pageArray.length - 1] != name_){
+            pageArray.push(name_);
+        }
+        api.addEventListener({
+            name: 'keyback'
+        }, function(ret, err) {
+            if(pageArray[pageArray.length - 1] =='index'){
+                api.toLauncher();
+            }else{   
+                api.closeFrame({
+                    name: pageArray[pageArray.length - 1]
+                });
+                pageArray.splice(pageArray.length - 1,1);
+            }
+        });
+    }
+    function pageArraySplice() {
+        pageArray.splice(pageArray.length - 1,1);
+    }
+</script>
+</html>

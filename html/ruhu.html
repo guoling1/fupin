@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>入户调查</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta http-equiv="Access-Control-Allow-Origin" content="*">
+<script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="../js/jquery.flexslider-min.js"></script>
+<link type="text/css" href="../css/FlexSlider.css" rel="stylesheet"/>
+<link href="../css/index.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="../js/autoview.js"></script>
+<style>
+body{ background:#f0eff4;}
+.slides li p{ text-align: left; }
+.flex-control-nav{bottom:6px;}
+</style>
+</head>
+
+<body>
+     <header class="pos_rela head_gg"><span style=" z-index:100; height:2.5rem; width:5rem;position:absolute; " tapmode="selected" onclick="fn_closeframe()"></span><a title="返回" class="btnBack" style="border: 10px solid #f35957;border-right-color: #fff;width: 0;height: 0;"></a>入户调查</header>
+	<div class="myflexslider">
+        <ul class="slides" id="lunbo">
+        
+        </ul>
+    </div>
+
+    <div class="ruhu_1 ruhu_0">
+    	<a tapmode="selected" onclick="go_('ruhu_0')">
+        	动员大会
+            <span style="float:right;"><img src="../img/2.png" style="width:25px; height:25px; margin-top:18px;" /></span>
+        </a>
+    </div>
+    <div class="ruhu_1 " style="margin-top:0.8rem;">
+        <a tapmode="selected" onclick="go_('ruhu_1')">
+            第一次入户
+            <span style="float:right;"><img src="../img/2.png" style="width:25px; height:25px; margin-top:18px;" /></span>
+        </a>
+    </div>
+    <div class="ruhu_1 ruhu_2">
+    	<a tapmode="selected" onclick="go_('ruhu_2_list')">
+        	第二次入户
+            <span style="float:right;"><img src="../img/2.png" style="width:25px; height:25px; margin-top:18px;" /></span>
+        </a>
+    </div>
+     <div class="ruhu_1 ruhu_3">
+    	<a tapmode="selected" onclick="go_('ruhu_3_list')">
+        	第三次入户
+            <span style="float:right;"><img src="../img/2.png" style="width:25px; height:25px; margin-top:18px;" /></span>
+        </a>
+    </div>
+    <div class="ruhu_1 " style="margin-top:0.8rem;">
+        <a tapmode="selected" onclick="go_('ruhu_4_list')">
+            第四次入户
+            <span style="float:right;"><img src="../img/2.png" style="width:25px; height:25px; margin-top:18px;" /></span>
+        </a>
+    </div>
+ </div> 
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+    apiready = function(){
+        api.execScript({
+            name:'main',
+            script:"keybackevent('ruhu');"
+        });
+        lunbo();
+    };
+    function lunbo(){
+        api.ajax({
+            url: $api.getStorage('appbase')+'appbase/index.php?method=lunbo',
+            dataType:'json',
+            cache: true,
+        }, function(ret, err){
+            if(ret){
+                $api.html($api.byId('lunbo'), ret.list);
+                $(document).ready(function() {
+                  $('.myflexslider').flexslider({
+                    controlNav: true, 
+                    directionNav: false,
+                    animation: "slide",
+                    //manualControls: ".myflexslider .slidenav"
+                  });
+                });
+            }
+        });
+    }
+    function go_(page_) {
+        api.openFrame({
+            name: page_,
+            url: page_+'.html',
+            rect: {
+                x: 0,
+                y: $api.getStorage('statusbarH'),
+                w: 'auto',
+                h: $api.getStorage('frameHeight')
+            },
+            pageParam: {
+                name: 'test'
+            },
+        });
+    }
+    function go_ad(id_){
+      api.openFrame({
+            name: 'ad',
+            url: 'ad.html',
+            rect: {
+                x: 0,
+                y: $api.getStorage('statusbarH'),
+                w: 'auto',
+                h: $api.getStorage('frameHeight')
+            },
+            pageParam: {
+                id: id_
+            },
+        });
+    }
+    function fn_closeframe() {
+        api.execScript({
+            name:'main',
+            script:'pageArraySplice();'
+        });
+		api.closeFrame();
+    }
+</script>
+</html>

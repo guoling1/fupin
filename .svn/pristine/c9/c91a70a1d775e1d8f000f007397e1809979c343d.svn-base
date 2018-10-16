@@ -1,0 +1,187 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, initial-scale=1.0, width=device-width"/>
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="../css/main.css">
+    <link rel="stylesheet" type="text/css" href="../css/font-awesome.min.css">
+    <link type="text/css" href="../css/style1.css" rel="stylesheet"/>
+    <script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="../js/jquery.flexslider-min.js"></script>
+    <link type="text/css" href="../css/FlexSlider.css" rel="stylesheet"/>
+    
+</head>
+<body>
+    <div class="title">大名县贫困人口大数据平台</div>
+    <div class="myflexslider"  style="margin-top:50px;">
+        <ul class="slides" id="lunbo">
+            
+        </ul>
+    </div>
+      <div class="mingxiList2">
+        <ul>
+          <li ><a tapmode="selected" onclick="go_ruhu()">
+            <div><img src="../img/ruhu.png"></div>
+            <div>入户调查</div> </a> 
+          </li>
+          <li ><a tapmode="selected" onclick="go_pingyi()">
+            <div><img src="../img/pinyi.png"></div>
+            <div>民主评议</div>  
+           </a>
+          </li>
+          <li ><a tapmode="selected" onclick="go_('gg')">
+            <div><img src="../img/gongshi.png"></div>
+            <div>公示公告</div>  </a>
+          </li>
+          <li ><a tapmode="selected" onclick="go_('lingdao')">
+            <div><img src="../img/jigou.png"></div>
+            <div>领导小组</div>  </a>
+          </li>
+          <li ><a tapmode="selected" onclick="go_('zhengce')">
+            <div><img src="../img/zhengce.png"></div>
+            <div>政策解读</div> </a> 
+          </li>
+          <li ><a tapmode="selected" onclick="go_('dongtai')">
+            <div ><img src="../img/yixiang.png"></div>
+            <div>工作动态</div>  </a>
+          </li>
+          <li ><a tapmode="selected" onclick="go_tongji()">
+            <div ><img src="../img/meili.png"></div>
+            <div>数据统计</div>  </a>
+          </li>
+          <li ><a tapmode="selected" onclick="go_('tongbao')">
+            <div ><img src="../img/huodong.png"></div>
+            <div>督查通报</div>  </a>
+          </li>
+           <li ><a tapmode="selected" onclick="go_('zhongxin')">
+            <div ><img src="../img/qiuzhu.png"></div>
+            <div>举报中心</div>  </a>
+          </li>
+        </ul>
+      </div>
+      <div style=" float: left;width: 100%; height: 6rem;"> </div>
+      <div id="footer" style="position:fixed; z-index: 100; bottom:0px; width:100%;padding: 13px 0;background: #f35957; display: none;">
+      	<div id="nickname" style="float: left;width: 50%;text-align: center;font-size: 1.5rem;color: #fff;" tapmode="selected" onclick="go_('update')">修改密码</div>
+      	<div style="float: right;width: 50%;text-align: center;font-size: 1.5rem;color: #fff;" tapmode="selected" onclick="fn_out()">退出</div>
+      </div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+    apiready = function(){
+    	api.execScript({
+        name:'main',
+		    script:"keybackevent('index');"
+      });
+      if($api.getStorage('nickname')){
+        //$api.text($api.byId('nickname'), $api.getStorage('nickname'));
+        //$api.attr($api.dom('#footer'),'style','display:block');
+        $("#footer").show();
+      }
+    	lunbo();
+    };
+    function lunbo(){
+        api.ajax({
+            url: $api.getStorage('appbase')+'appbase/index.php?method=lunbo',
+            dataType:'json',
+            cache: true,
+        }, function(ret, err){
+            if(ret){
+                $api.html($api.byId('lunbo'), ret.list);
+                $(document).ready(function() {
+                  $('.myflexslider').flexslider({
+                    controlNav: true, 
+                    directionNav: false,
+                    animation: "slide",
+                    //manualControls: ".myflexslider .slidenav"
+                  });
+                });
+            }
+        });
+    }
+    function go_ruhu() {
+      if($api.getStorage('levelname')){
+        if($api.getStorage('levelname') == '4'){
+          go_('ruhu');
+        }else{
+          alert('抱歉，您没有入户调查权限！');
+        }
+      }else{
+        go_('login');
+      }
+    }
+    function go_pingyi() {
+      if($api.getStorage('levelname')){
+        if($api.getStorage('levelname') == '5'){
+          go_('pingyi_1_list');
+        }else{
+          alert('抱歉，您没有民主评议权限！');
+        }
+      }else{
+        go_('login');
+      }
+    }
+      function go_tongji() {
+      if($api.getStorage('levelname')){
+        if($api.getStorage('levelname') == '7'){
+          go_('tongji_list_1');
+        }else{
+          alert('抱歉，您没有数据统计权限！');
+        }
+      }else{
+        go_('login');
+      }
+    }
+    function go_(page_) {
+        api.openFrame({
+            name: page_,
+            url: page_+'.html',
+            rect: {
+                x: 0,
+                y: $api.getStorage('statusbarH'),
+                w: 'auto',
+                h: $api.getStorage('frameHeight')
+            },
+            pageParam: {
+                name: 'test'
+            },
+        });
+    }
+    function go_ad(id_){
+      api.openFrame({
+            name: 'ad',
+            url: 'ad.html',
+            rect: {
+                x: 0,
+                y: $api.getStorage('statusbarH'),
+                w: 'auto',
+                h: $api.getStorage('frameHeight')
+            },
+            pageParam: {
+                id: id_
+            },
+        });
+    }
+    function fn_out(){
+      api.confirm({
+          title: '提示',
+          msg: '您确定要退出当前帐号吗？',
+          buttons: ['确定', '取消']
+      }, function(ret, err){
+          var index = ret.buttonIndex;
+            if(index == 1)
+            {
+              //$api.clearStorage('userid');
+              $api.rmStorage('nickname');
+              $api.rmStorage('username');
+              $api.rmStorage('levelname');
+              
+              //$api.attr($api.dom('#footer'),'style','display:none');
+              $("#footer").hide();
+            }
+      });
+    }
+</script>
+
+</html>
